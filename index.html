@@ -1,21 +1,110 @@
+html
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>A+ Study Hub</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>A+ Exam Prep | Official Study Hub</title>
     <style>
-        body { font-family: sans-serif; text-align: center; background: #f4f4f9; padding-top: 50px; }
-        .hub-container { background: white; padding: 40px; border-radius: 12px; display: inline-block; box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
-        .exam-btn { display: block; width: 250px; padding: 20px; margin: 20px auto; background: #007bff; color: white; text-decoration: none; border-radius: 8px; font-weight: bold; }
-        .exam-btn:hover { background: #0056b3; }
-        .core2 { background: #6c757d; } /* Grayed out until you add Core 2 data */
+        :root {
+            --primary: #2563eb;
+            --secondary: #64748b;
+            --dark: #0f172a;
+            --light: #f8fafc;
+        }
+        body { 
+            font-family: 'Inter', -apple-system, sans-serif; 
+            background: var(--light); 
+            color: var(--dark);
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+        }
+        header {
+            width: 100%;
+            padding: 40px 0;
+            background: var(--dark);
+            color: white;
+            text-align: center;
+            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);
+        }
+        .container {
+            max-width: 900px;
+            width: 90%;
+            margin-top: -30px;
+        }
+        .hub-card {
+            background: white;
+            padding: 40px;
+            border-radius: 16px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+            text-align: center;
+        }
+        h1 { margin: 0; font-size: 2.5rem; letter-spacing: -0.025em; }
+        p { color: var(--secondary); font-size: 1.1rem; }
+        
+        .exam-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+            margin-top: 30px;
+        }
+        .exam-card {
+            padding: 30px;
+            border: 2px solid #e2e8f0;
+            border-radius: 12px;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            color: inherit;
+        }
+        .exam-card:hover {
+            border-color: var(--primary);
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px rgba(37, 99, 235, 0.1);
+        }
+        .exam-card h2 { color: var(--primary); margin-top: 0; }
+        .badge {
+            display: inline-block;
+            padding: 4px 12px;
+            background: #dbeafe;
+            color: var(--primary);
+            border-radius: 99px;
+            font-size: 0.8rem;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+        footer { margin-top: auto; padding: 20px; font-size: 0.8rem; color: var(--secondary); }
     </style>
 </head>
 <body>
-    <div class="hub-container">
-        <h1>CompTIA A+ Study Hub</h1>
-        <p>Select an exam to begin practicing.</p>
-        <a href="core1.html" class="exam-btn">Core 1 (220-1201)</a>
-        <a href="core2.html" class="exam-btn core2">Core 2 (220-1202)</a>
+    <header>
+        <h1>A+ Prep Hub</h1>
+        <p style="color: #94a3b8;">Master the CompTIA A+ 220-1201 & 1202 Exams</p>
+    </header>
+
+    <div class="container">
+        <div class="hub-card">
+            <div class="exam-grid">
+                <!-- Core 1 Card -->
+                <a href="core1.html" class="exam-card">
+                    <span class="badge">Hardware & Network</span>
+                    <h2>Core 1 (1201)</h2>
+                    <p>300 Questions covering mobile devices, networking, hardware, and cloud computing.</p>
+                </a>
+                <!-- Core 2 Card -->
+                <a href="core2.html" class="exam-card">
+                    <span class="badge">Software & Security</span>
+                    <h2>Core 2 (1202)</h2>
+                    <p>300 Questions covering OS, security, software troubleshooting, and operations.</p>
+                </a>
+            </div>
+        </div>
     </div>
+
+    <footer>
+        &copy; 2025 A+ Prep Hub. This site is not affiliated with CompTIA.
+    </footer>
 </body>
 </html>

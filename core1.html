@@ -3,32 +3,141 @@
 <head>
     <meta charset="UTF-8">
     <title>A+ 1201 Core 1 Practice Exam</title>
-    <style>
-        body { font-family: sans-serif; background: #f4f4f9; display: flex; justify-content: center; padding: 20px; }
-        #quiz-container { background: white; padding: 30px; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); max-width: 600px; width: 100%; }
-        .option-btn { display: block; width: 100%; padding: 10px; margin: 5px 0; border: 1px solid #ddd; border-radius: 4px; background: white; cursor: pointer; text-align: left; }
-        .option-btn:hover { background: #f0f0f0; }
-        #explanation { margin-top: 15px; padding: 10px; background: #e7f3ff; border-left: 4px solid #2196F3; display: none; }
-        #next-btn { margin-top: 20px; padding: 10px 20px; background: #28a745; color: white; border: none; border-radius: 4px; cursor: pointer; display: none; }
-        .back-home {
-    display: inline-block;
-    margin-bottom: 20px;
-    padding: 8px 15px;
-    background: #6c757d;
-    color: white;
-    text-decoration: none;
-    border-radius: 4px;
-    font-size: 0.9em;
-}
-.back-home:hover {
-    background: #5a6268;
-}
-    </style>
+<style>
+    /* 1. DEFINE THE COLOR THEMES */
+    :root {
+        --bg: #f8fafc;
+        --card: #ffffff;
+        --text: #0f172a;
+        --secondary-text: #64748b;
+        --border: #e2e8f0;
+        --primary: #2563eb;
+    }
+
+    body.dark-mode {
+        --bg: #0f172a;
+        --card: #1e293b;
+        --text: #f8fafc;
+        --secondary-text: #94a3b8;
+        --border: #334155;
+        --primary: #3b82f6;
+    }
+
+    /* 2. CORE LAYOUT */
+    body { 
+        font-family: 'Inter', -apple-system, sans-serif; 
+        background: var(--bg); 
+        color: var(--text); 
+        display: flex; 
+        flex-direction: column;
+        align-items: center; 
+        padding: 40px 20px;
+        transition: background 0.3s, color 0.3s;
+        margin: 0;
+    }
+
+    /* 3. THE EXAM CARD */
+    #quiz-container { 
+        background: var(--card); 
+        padding: 30px; 
+        border-radius: 16px; 
+        border: 1px solid var(--border);
+        box-shadow: 0 10px 25px rgba(0,0,0,0.05); 
+        max-width: 650px; 
+        width: 100%; 
+    }
+
+    /* 4. PROGRESS BAR */
+    .progress-container {
+        width: 100%;
+        background: var(--border);
+        height: 8px;
+        border-radius: 10px;
+        margin-bottom: 25px;
+        overflow: hidden;
+    }
+    #progress-bar {
+        width: 0%;
+        height: 100%;
+        background: var(--primary);
+        transition: width 0.3s ease;
+    }
+
+    /* 5. TEXT ELEMENTS */
+    #progress { color: var(--secondary-text); font-size: 0.9rem; margin-bottom: 10px; }
+    #question-text { font-size: 1.2rem; font-weight: 600; line-height: 1.5; margin-bottom: 20px; }
+
+    /* 6. BUTTONS */
+    .option-btn { 
+        display: block; 
+        width: 100%; 
+        padding: 15px; 
+        margin: 10px 0; 
+        border: 1px solid var(--border); 
+        border-radius: 10px; 
+        background: var(--card); 
+        color: var(--text);
+        cursor: pointer; 
+        text-align: left;
+        font-size: 1rem;
+        transition: all 0.2s;
+    }
+    .option-btn:hover:not(:disabled) { 
+        background: var(--bg); 
+        border-color: var(--primary); 
+    }
+    .option-btn:disabled { cursor: default; }
+
+    /* 7. NAVIGATION & TOGGLES */
+    .back-home { align-self: flex-start; margin-bottom: 20px; color: var(--primary); text-decoration: none; font-weight: 500; }
+    
+    .theme-toggle {
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        padding: 10px 15px;
+        border-radius: 30px;
+        border: 1px solid var(--border);
+        background: var(--card);
+        color: var(--text);
+        cursor: pointer;
+        font-weight: 600;
+        box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    }
+
+    /* 8. FEEDBACK AREA */
+    #explanation { 
+        margin-top: 20px; 
+        padding: 20px; 
+        border-radius: 10px; 
+        background: var(--bg); 
+        border-left: 5px solid var(--primary); 
+        display: none; 
+        font-size: 0.95rem;
+        line-height: 1.6;
+    }
+    
+    #next-btn { 
+        width: 100%;
+        margin-top: 20px; 
+        padding: 16px; 
+        background: var(--primary); 
+        color: white; 
+        border: none; 
+        border-radius: 10px; 
+        font-weight: bold;
+        font-size: 1rem;
+        cursor: pointer; 
+        display: none; 
+    }
+</style>
 </head>
 <body>
-
+<button class="theme-toggle" onclick="toggleTheme()">🌓 Toggle Mode</button>
+<div class="progress-container"><div id="progress-bar"></div></div>
 <div id="quiz-container">
     <a href="index.html" class="back-home">← Back to Home</a>
+    <div class="progress-container"><div id="progress-bar"></div></div>
     <h2 id="progress">Question 1 of 75</h2>
     <p id="question-text" style="font-weight: bold; font-size: 1.1em;"></p>
     <div id="options-container"></div>
@@ -356,6 +465,8 @@
 
     function showQuestion() {
         const q = currentExam[currentIndex];
+        const percent = ((currentIndex) / currentExam.length) * 100;
+    document.getElementById('progress-bar').style.width = percent + '%';
         document.getElementById('progress').innerText = `Question ${currentIndex + 1} of 75`;
         document.getElementById('question-text').innerText = q.q;
         document.getElementById('explanation').style.display = 'none';
@@ -404,6 +515,17 @@
     }
 
     startExam();
+    function toggleTheme() {
+    document.body.classList.toggle('dark-mode');
+    // Save preference to the browser
+    const isDark = document.body.classList.contains('dark-mode');
+    localStorage.setItem('theme', isDark ? 'dark' : 'light');
+}
+
+// Check for saved theme on load
+if (localStorage.getItem('theme') === 'dark') {
+    document.body.classList.add('dark-mode');
+}
 </script>
 </body>
 </html>
