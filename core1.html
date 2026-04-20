@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="manifest" href="manifest.json">
     <title>A+ 1201 Core 1 Practice Exam</title>
 <style>
@@ -131,6 +132,35 @@
         cursor: pointer; 
         display: none; 
     }
+    /* Mobile Portrait Adjustments */
+@media screen and (max-width: 600px) {
+    body {
+        padding: 10px; /* Reduce outer padding to give the card more room */
+    }
+    
+    #quiz-container {
+        padding: 20px 15px; /* Narrower padding inside the card */
+        width: 100%; /* Ensure it takes full width */
+        border-radius: 0; /* Optional: removing rounded corners looks better on tiny screens */
+        box-shadow: none; /* Simplifies the look for mobile */
+    }
+
+    #question-text {
+        font-size: 1.1rem; /* Slightly smaller text for long questions */
+    }
+
+    .option-btn {
+        padding: 12px; /* Thinner buttons to save vertical space */
+        font-size: 0.95rem;
+    }
+
+    .theme-toggle {
+        top: 10px;
+        right: 10px;
+        padding: 6px 10px;
+        font-size: 0.7rem;
+    }
+}
 </style>
 </head>
 <body>
