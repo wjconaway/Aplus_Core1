@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>A+ 1201 Core 2 Practice Exam</title>
+    <style>
+        body { font-family: sans-serif; background: #f4f4f9; display: flex; justify-content: center; padding: 20px; }
+        #quiz-container { background: white; padding: 30px; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); max-width: 600px; width: 100%; }
+        .option-btn { display: block; width: 100%; padding: 10px; margin: 5px 0; border: 1px solid #ddd; border-radius: 4px; background: white; cursor: pointer; text-align: left; }
+        .option-btn:hover { background: #f0f0f0; }
+        #explanation { margin-top: 15px; padding: 10px; background: #e7f3ff; border-left: 4px solid #2196F3; display: none; }
+        #next-btn { margin-top: 20px; padding: 10px 20px; background: #28a745; color: white; border: none; border-radius: 4px; cursor: pointer; display: none; }
+    </style>
+</head>
+<body>
+
+<div id="quiz-container">
+    <h2 id="progress">Question 1 of 75</h2>
+    <p id="question-text" style="font-weight: bold; font-size: 1.1em;"></p>
+    <div id="options-container"></div>
+    <div id="explanation"></div>
+    <button id="next-btn" onclick="nextQuestion()">Next Question</button>
+    <div id="final-score" style="display:none; text-align:center;">
+        <h2>Exam Complete!</h2>
+        <p id="score-display" style="font-size: 1.5em;"></p>
+        <button onclick="location.reload()">Restart Exam</button>
+    </div>
+</div>
+
+<script>
+    // PASTE YOUR FULL DATABASE HERE (Exactly as it was in Python, just change 'database =' to 'const questions =')
+    const questions = [
+        {"q": "Which wireless standard operates exclusively in the 6GHz band?", "o": ["A. 802.11ac", "B. 802.11ax (Wi-Fi 6E)", "C. 802.11n", "D. 802.11ax (Wi-Fi 6)"], "a": "B", "e": "Wi-Fi 6E extends Wi-Fi 6 into the 6GHz band for less congestion."}
+        // ... paste all 150 questions here ...
+    ];
+
+    let currentExam = [];
+    let currentIndex = 0;
+    let score = 0;
+
+    function startExam() {
+        // Randomly shuffle and pick 75
+        currentExam = questions.sort(() => 0.5 - Math.random()).slice(0, 75);
+        showQuestion();
+    }
+
+    function showQuestion() {
+        const q = currentExam[currentIndex];
+        document.getElementById('progress').innerText = `Question ${currentIndex + 1} of 75`;
+        document.getElementById('question-text').innerText = q.q;
+        document.getElementById('explanation').style.display = 'none';
+        document.getElementById('next-btn').style.display = 'none';
+        
+        const container = document.getElementById('options-container');
+        container.innerHTML = '';
+        
+        q.o.forEach(opt => {
+            const btn = document.createElement('button');
+            btn.className = 'option-btn';
+            btn.innerText = opt;
+            btn.onclick = () => checkAnswer(opt[0], q.a, q.e);
+            container.appendChild(btn);
+        });
+    }
+
+    function checkAnswer(selected, correct, exp) {
+        const buttons = document.querySelectorAll('.option-btn');
+        buttons.forEach(b => b.disabled = true);
+        
+        const explanationDiv = document.getElementById('explanation');
+        explanationDiv.style.display = 'block';
+        
+        if (selected === correct) {
+            explanationDiv.innerHTML = `<span style="color:green; font-weight:bold;">Correct!</span>`;
+            score++;
+        } else {
+            explanationDiv.innerHTML = `<span style="color:red; font-weight:bold;">Incorrect.</span> Correct answer was ${correct}.<br><br><strong>Note:</strong> ${exp}`;
+        }
+        document.getElementById('next-btn').style.display = 'block';
+    }
+
+    function nextQuestion() {
+        currentIndex++;
+        if (currentIndex < currentExam.length) {
+            showQuestion();
+        } else {
+            document.getElementById('question-text').style.display = 'none';
+            document.getElementById('options-container').style.display = 'none';
+            document.getElementById('explanation').style.display = 'none';
+            document.getElementById('next-btn').style.display = 'none';
+            document.getElementById('final-score').style.display = 'block';
+            document.getElementById('score-display').innerText = `${score} / 75 (${((score/75)*100).toFixed(1)}%)`;
+        }
+    }
+
+    startExam();
+</script>
+</body>
+</html>
